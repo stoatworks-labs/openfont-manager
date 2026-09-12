@@ -37,7 +37,7 @@ dirs = "6"
 reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "gzip"] }
 
 # Content hashes for "this list was already processed".
-sha2 = "0.10"
+sha2 = "0.11"
 
 # XML: font lists, and WebDAV PROPFIND multistatus responses.
 roxmltree = "0.20"
