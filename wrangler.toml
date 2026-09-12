@@ -1,0 +1,28 @@
+# Cloudflare deployment for OpenFont Manager.
+#
+# A static-assets-only Worker: no server code. Built by the deploy workflow in
+# .github/workflows/deploy.yml (npm ci && npm run build), never by a Cloudflare
+# dashboard build — none is connected, and a comment saying otherwise is how
+# five fleet sites drifted weeks behind main. Check with:
+#
+#   cf-run npx wrangler deployments list
+#
+# `public/_headers` is copied into dist/ by Vite and carries the CSP and the
+# immutable-cache rule for hashed assets; the assets runtime honours it.
+#
+# `name` must match the Cloudflare project.
+
+name = "openfont-manager"
+compatibility_date = "2026-07-30"
+
+[assets]
+directory = "./dist"
+
+# The custom domain is declared here rather than clicked into the dashboard, so
+# the routing is in the repo and a fresh deploy reproduces it. Note this
+# silently disables the workers.dev URL. Do the FIRST deploy by hand: a new
+# custom domain can take over six minutes to resolve, longer than the
+# workflow's live-site check waits.
+[[routes]]
+pattern = "openfont-manager.stoatworks-labs.com"
+custom_domain = true

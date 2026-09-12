@@ -5,13 +5,15 @@
 #
 # style-src / font-src carry the PREVIEW sources only — the Google CSS API and
 # the Fontsource CSS — which serve subsetted woff2 and are never downloaded.
-# A too-narrow CSP here fails only in production, where _headers applies and
-# the dev server's absence of it hides the problem.
+# connect-src also carries intake.stoatworks-labs.com, where the support
+# footer's feedback button posts. A too-narrow CSP here fails only in
+# production, where _headers applies and the dev server's absence of it hides
+# the problem.
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: blob:; font-src 'self' data: blob: https://fonts.gstatic.com https://cdn.jsdelivr.net; connect-src 'self' https://raw.githubusercontent.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: blob:; font-src 'self' data: blob: https://fonts.gstatic.com https://cdn.jsdelivr.net; connect-src 'self' https://raw.githubusercontent.com https://cdn.jsdelivr.net https://intake.stoatworks-labs.com; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

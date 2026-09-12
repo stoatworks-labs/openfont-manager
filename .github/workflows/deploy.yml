@@ -1,0 +1,93 @@
+# Build the site and put it in front of visitors.
+#
+# Same shape as negative-space's deploy.yml, which is the house pattern and
+# documents why it exists: a repo without this ships only when somebody
+# remembers to run `cf-run npm run deploy` from a laptop, and drifts from that
+# moment on. Needs CLOUDFLARE_API_TOKEN as a repo secret and
+# CLOUDFLARE_ACCOUNT_ID as a repo variable.
+
+name: deploy
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+      - ".github/dependabot.yml"
+  workflow_dispatch:
+
+# Newest push wins. wrangler uploads assets first and activates the version as
+# one step at the end, so a cancelled run never becomes the live version.
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Check the Cloudflare token is present
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${TOKEN:-}" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is not set on this repository, so the"
+            echo "::error::site cannot be deployed. The keychain entry cf-run uses"
+            echo "::error::(service 'stoatworks-cloudflare') holds the same token:"
+            echo "::error::  gh secret set CLOUDFLARE_API_TOKEN --repo stoatworks-labs/openfont-manager"
+            exit 1
+          fi
+          echo "token present - ok"
+
+      - run: npm ci
+
+      # The list parsers, the file selection and the zip pipeline are what a
+      # visitor relies on without seeing; the suite is what makes an automatic
+      # deploy defensible.
+      - run: npm test
+
+      - run: npm run build
+
+      # wrangler is pinned here because it is not a dependency of the project.
+      # Bump it deliberately.
+      - name: Deploy to Cloudflare
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: "false"
+        run: npx --yes wrangler@4.116.0 deploy
+
+      # Prove it landed. The <head> is untouched by Cloudflare's injected
+      # bot-management script and carries the hashed asset names, so hashing it
+      # catches a code change and a meta-only change alike.
+      - name: Check the live site is serving this build
+        run: |
+          set -euo pipefail
+          want=$(sed -n '1,/<\/head>/p' dist/index.html | shasum -a 256 | cut -d' ' -f1)
+          echo "expecting the live <head> to hash to $want"
+          for attempt in 1 2 3 4 5; do
+            got=$(curl -sS --max-time 30 "https://openfont-manager.stoatworks-labs.com/" \
+                  | sed -n '1,/<\/head>/p' | shasum -a 256 | cut -d' ' -f1 || true)
+            if [ "$got" = "$want" ]; then
+              echo "live site is serving this build (attempt $attempt)"
+              exit 0
+            fi
+            echo "not there yet, got $got — retrying in 10s (attempt $attempt)"
+            sleep 10
+          done
+          echo "::error::Deployed, but https://openfont-manager.stoatworks-labs.com/ is still"
+          echo "::error::not serving this build's <head>. Check the Worker's routes."
+          exit 1
