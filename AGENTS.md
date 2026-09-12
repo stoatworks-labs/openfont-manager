@@ -123,3 +123,23 @@ panel's Test, Sync now and log; a WebDAV source with basic auth.
 Not verified: the Windows registry/`AddFontResourceW` path and the Linux
 `fc-cache` path (carried over, not run); the login item (never enabled, to
 keep this machine clean); the release installers.
+
+The bundle's `install-fonts.ps1` is the same script as pptx-font-manager's,
+and that one *was* run end to end on Windows 11 26200 on 2026-09-12. It
+caught two things, both fixed here as well:
+
+- `New-Item -Path $regPath -Force` on the HKCU `Fonts` key recreates the key
+  **empty** when it already exists, so every run unregistered every per-user
+  font on the machine (the user's own included) before registering its own.
+  Files and the session's GDI copies survive, so it only shows at the next
+  sign-in. Measured: 10 values before that line, 0 after; guarded with
+  `Test-Path`, 10 → 11. The script now only creates the key when it is
+  missing, and `test/bundle.test.ts` pins that. The Rust `register_font`
+  goes through `winreg`'s `create_subkey_with_flags` (`RegCreateKeyExW`),
+  which opens an existing key intact — unaffected.
+- Chrome and Edge *do* see per-user fonts, but read the Windows font list
+  once per browser process: a font installed while the browser runs stays
+  invisible — reload, new tab and `queryLocalFonts` included — until it is
+  closed completely and reopened (Edge lingers in the tray). The installer's
+  closing line, the bundle README and `docs/PROVISIONING.md` now say that
+  instead of "browsers do not see per-user fonts".

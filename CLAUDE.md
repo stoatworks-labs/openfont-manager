@@ -8,7 +8,7 @@ Command reference. For the model, the invariants and the traps, read
 ```bash
 npm install
 npm run dev          # vite dev server
-npm test             # vitest — 32 tests, offline
+npm test             # vitest — 34 tests, offline
 npm run build        # tsc -b && vite build -> dist/
 npx tsc -b           # typecheck only
 

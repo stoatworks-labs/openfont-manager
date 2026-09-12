@@ -2,6 +2,7 @@ import { unzipSync, strFromU8 } from 'fflate'
 import { describe, expect, it } from 'vitest'
 import { downloadBundle } from '../src/core/bundle'
 import { findFamily } from '../src/core/catalogue'
+import { WINDOWS_PS1, readmeText } from '../src/core/installers'
 import { buildPlan } from '../src/core/plan'
 import { ALL } from '../src/core/types'
 
@@ -104,5 +105,42 @@ describe('downloadBundle', () => {
       off += c.length
     }
     expect(strFromU8(unzipSync(zip)['MANIFEST.txt']!)).toContain('NOT INCLUDED')
+  })
+})
+
+/**
+ * The Windows installer was run end to end on Windows 11 26200 on 2026-09-12.
+ * These pin the two things that run got wrong, so they cannot come back.
+ */
+describe('Windows installer', () => {
+  it('never recreates the per-user font registry key', () => {
+    const s = WINDOWS_PS1
+    // `New-Item -Force` on an EXISTING registry key recreates it empty. On
+    // the Fonts key that unregisters every per-user font on the machine —
+    // measured on Windows 11 26200: 10 values before the line, 0 after. The
+    // files stay, so the damage only shows at the next sign-in. This is also
+    // what was once misread as "the registry value did not persist".
+    //
+    // `New-Item\s` so that the `New-ItemProperty ... -Force` writing each
+    // value, which is fine, is not caught.
+    expect(s).not.toMatch(/New-Item\s[^\n]*\$regPath[^\n]*-Force/)
+    expect(s).not.toMatch(/New-Item\s[^\n]*-Force[^\n]*\$regPath/)
+    expect(s).toMatch(/if \(-not \(Test-Path \$regPath\)\)/)
+  })
+
+  it('tells the user a running browser needs a real restart, not a reload', () => {
+    // Chromium reads the Windows font list once per browser process. A font
+    // installed while it runs stays invisible to every page — measured across
+    // reload, a new tab and queryLocalFonts — until the process restarts. The
+    // old wording claimed per-user fonts were never seen at all; they are.
+    const readme = readmeText('T', 'today', 1, 1)
+    expect(readme).toMatch(/BROWSERS NEED A REAL RESTART/i)
+    expect(readme).toMatch(/close the browser completely/i)
+    expect(readme).toMatch(/Startup boost/)
+    expect(readme).not.toMatch(/even after a restart/i)
+    expect(readme).not.toMatch(/do not reliably see/i)
+    // And the installer's own closing line says the same thing.
+    expect(WINDOWS_PS1).toMatch(/only read the font list when they start/)
+    expect(WINDOWS_PS1).not.toMatch(/do not pick up per-user fonts at all/)
   })
 })

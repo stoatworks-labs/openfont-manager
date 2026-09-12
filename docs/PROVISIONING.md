@@ -81,8 +81,12 @@ fonts is a sync that one day empties a laptop before a show.
   the font folder — a download that came back as an error page cannot end
   up installed under a font's name.
 - **Already-open applications** may need restarting before they see new
-  fonts. On Windows, Chromium-based browsers do not reliably see per-user
-  fonts at all; Office does.
+  fonts. On Windows, Chrome and Edge read the font list once, when the
+  browser process starts: a font installed while the browser is running
+  stays invisible to it — reload, new tab and `queryLocalFonts` included —
+  until it is closed completely and reopened. Edge keeps running in the
+  tray after its last window closes, so end it there too. Office sees the
+  font straight away.
 - **Per-user, not system-wide.** Fonts go to `~/Library/Fonts`,
   `%LOCALAPPDATA%\Microsoft\Windows\Fonts` or `~/.local/share/fonts`, so no
   administrator password is needed and a machine with several accounts
