@@ -1,0 +1,62 @@
+name: ci
+
+# Two halves, checked separately:
+#
+#   web    npm ci, vitest, tsc + vite build, then a real-browser smoke check of
+#          dist/ — a React major mismatch builds green and throws on first render.
+#   tauri  cargo test on the desktop crate, on Linux. That needs the webkit2gtk
+#          headers before the crate will even typecheck. The font-kit crate
+#          also wants fontconfig/freetype.
+#
+# Neither job needs a secret.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      # Deliberately a plain `npm ci` — no --legacy-peer-deps. A bump that only
+      # installs by ignoring the peer graph is exactly what this is here to catch.
+      - name: Install dependencies
+        run: npm ci
+      - name: Lockfile matches manifest
+        run: npm ls --all >/dev/null
+      - name: Test
+        run: npm test
+      # `build` is `tsc -b && vite build`, so this is the typecheck as well.
+      - name: Build
+        run: npm run build
+      - name: Smoke-check the built site
+        uses: stoatworks-labs/smoke-check@v1
+        with:
+          dir: dist
+
+  tauri:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: 'src-tauri -> target'
+      - name: Linux system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libfontconfig1-dev libfreetype6-dev
+      # The desktop crate embeds the built site; an empty stand-in is enough to
+      # compile and test the Rust half without a Node toolchain on this job.
+      - name: Stand-in frontend dist
+        run: mkdir -p dist && echo '<!doctype html><title>ci</title>' > dist/index.html
+      - name: Test
+        run: cargo test --manifest-path src-tauri/Cargo.toml
+      - name: Format
+        run: cargo fmt --manifest-path src-tauri/Cargo.toml --check

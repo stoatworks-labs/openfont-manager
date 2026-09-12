@@ -110,3 +110,15 @@ describe('resolution and export', () => {
     expect(resolveList(xml.entries).items.map((i) => i.family.id)).toEqual(['google:poppins', 'fontsource:adwaita-sans'])
   })
 })
+
+describe('shared examples', () => {
+  it('parse in every format, the same way the Rust side reads them', async () => {
+    const { readFileSync } = await import('node:fs')
+    for (const name of ['fonts.csv', 'fonts.xml', 'fonts.txt']) {
+      const r = parseList(readFileSync(new URL(`../examples/${name}`, import.meta.url), 'utf8'), name)
+      expect(r.errors, name).toEqual([])
+      expect(r.entries.map((e) => e.family), name).toEqual(['Poppins', 'Inter', 'Playfair Display', 'Adwaita Sans', 'Carlito'])
+      expect(resolveList(r.entries).unresolved, name).toEqual([])
+    }
+  })
+})

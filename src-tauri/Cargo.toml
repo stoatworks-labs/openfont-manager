@@ -1,0 +1,72 @@
+[package]
+name = "openfont-manager"
+version = "0.1.0"
+description = "Browse and bulk-download open-source fonts, and install them automatically from a watched folder or a network share."
+authors = ["Stoatworks Labs"]
+license = "MIT"
+edition = "2021"
+rust-version = "1.77"
+
+[lib]
+name = "openfont_manager_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-autostart = "2"
+tauri-plugin-single-instance = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Font enumeration through the OS's own registry — CoreText on macOS,
+# DirectWrite on Windows, fontconfig on Linux — for the "installed" badge and
+# the Windows registry face name. Deliberately not a crate that parses every
+# file on disk.
+font-kit = "0.14"
+
+dirs = "6"
+
+# Downloads. Blocking on purpose: the sync pass runs on its own thread and a
+# handful of parallel workers is all a font pull needs. rustls so Linux builds
+# do not need OpenSSL headers.
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "gzip"] }
+
+# Content hashes for "this list was already processed".
+sha2 = "0.10"
+
+# XML: font lists, and WebDAV PROPFIND multistatus responses.
+roxmltree = "0.20"
+
+# Timestamps in reports and the log.
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# Writing a file into ~/Library/Fonts does make macOS pick it up, but only
+# asynchronously (~10 s). Explicit CoreText registration closes that window;
+# see `register_font` in fonts.rs. Versions track font-kit's own.
+core-foundation = "0.10"
+
+[target.'cfg(windows)'.dependencies]
+# Installing a font on Windows needs a registry value as well as a file copy.
+winreg = "0.56"
+
+# WebDAV passwords go in the OS keychain where there is one.
+[target.'cfg(target_os = "macos")'.dependencies.keyring]
+version = "3"
+features = ["apple-native"]
+
+[target.'cfg(windows)'.dependencies.keyring]
+version = "3"
+features = ["windows-native"]
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

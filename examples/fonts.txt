@@ -1,0 +1,6 @@
+# OpenFont Manager font list — plain text: one family per line.
+Poppins
+Inter
+Playfair Display
+Adwaita Sans
+Carlito

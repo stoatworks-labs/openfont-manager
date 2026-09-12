@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "OpenFont Manager",
+  "version": "0.1.0",
+  "identifier": "com.stoatworks.openfontmanager",
+  "build": {
+    "beforeDevCommand": "npm run dev -- --port 5189 --strictPort",
+    "devUrl": "http://localhost:5189",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "OpenFont Manager",
+        "width": 1180,
+        "height": 820,
+        "minWidth": 720,
+        "minHeight": 520,
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: blob:; font-src 'self' data: blob: https://fonts.gstatic.com https://cdn.jsdelivr.net; connect-src 'self' ipc: http://ipc.localhost https://raw.githubusercontent.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["dmg", "app", "nsis", "deb", "appimage"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "copyright": "Copyright (c) 2026 Stoatworks Labs",
+    "category": "Utility",
+    "shortDescription": "Open-source font downloader and installer",
+    "longDescription": "Browse, preview and bulk-download open-source fonts from Google Fonts and Fontsource, hand it a CSV or XML list, and have fonts installed automatically at login from a watched folder or a network share."
+  }
+}

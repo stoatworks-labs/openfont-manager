@@ -1,0 +1,12 @@
+# OpenFont Manager font list — CSV
+#
+# Only `family` is required; the header row is optional. Weights are numbers
+# or style words separated by `;` or spaces (never a comma); blank or `all`
+# takes the whole family. `italic` is yes/no. `source` is google, fontsource
+# or blank for automatic.
+family,weights,italic,source
+Poppins,400;700,yes,google
+Inter,all,,
+"Playfair Display",700,no,
+Adwaita Sans,,,fontsource
+Carlito,,,

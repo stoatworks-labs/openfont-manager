@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "What the main window may do. Small on purpose: downloads, installation, the watched folder and the network sources all go through this app's own commands, which validate paths and file contents themselves, so no filesystem or HTTP plugin is granted. The dialog plugin picks folders; the opener reveals them and opens the links in the footer.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "dialog:allow-open",
+    "opener:allow-open-url",
+    "opener:allow-open-path"
+  ]
+}

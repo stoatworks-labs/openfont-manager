@@ -132,6 +132,8 @@ export const native = {
   setPassword: (id: string, password: string) => invoke<void>('set_source_password', { id, password }),
   hasPassword: (id: string) => invoke<boolean>('has_source_password', { id }),
   cancelDownload: () => invoke<void>('cancel_download'),
+  /** The list given on the command line, if any — once. */
+  takePendingList: () => invoke<{ name: string; text: string } | null>('take_pending_list'),
 }
 
 /** Subscribe to a native event; returns the unlisten function. */

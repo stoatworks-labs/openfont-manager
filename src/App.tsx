@@ -40,6 +40,12 @@ export default function App() {
   useEffect(() => {
     if (!desktop) return
     const offs: Array<() => void> = []
+    void native.takePendingList().then((list) => {
+      if (list) {
+        setExternal(list)
+        setTab('import')
+      }
+    })
     void onNativeEvent<{ name: string; text: string }>('open-list', (payload) => {
       setExternal(payload)
       setTab('import')

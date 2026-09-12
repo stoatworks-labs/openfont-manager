@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  OpenFont Manager font list — XML
+
+  The root element's name does not matter. Every <font> element is one family:
+  the name from the `family` or `name` attribute, a <family> child, or the
+  element's text. Weights, italic and source may be attributes or children.
+-->
+<fonts>
+  <font family="Poppins" weights="400 700" italic="true" source="google"/>
+  <font>Inter</font>
+  <font name="Playfair Display">
+    <weight>700</weight>
+    <weight>900</weight>
+    <italic>no</italic>
+  </font>
+  <font family="Adwaita Sans" source="fontsource"/>
+  <font><family>Carlito</family></font>
+</fonts>
