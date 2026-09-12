@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.wrangler/
+*.tsbuildinfo
+.DS_Store
+
+# Tauri build output
+src-tauri/target/
+src-tauri/gen/
