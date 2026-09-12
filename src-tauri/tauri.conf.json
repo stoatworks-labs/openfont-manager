@@ -18,7 +18,8 @@
         "height": 820,
         "minWidth": 720,
         "minHeight": 520,
-        "dragDropEnabled": false
+        "dragDropEnabled": false,
+        "visible": false
       }
     ],
     "security": {
@@ -27,7 +28,13 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["dmg", "app", "nsis", "deb", "appimage"],
+    "targets": [
+      "dmg",
+      "app",
+      "nsis",
+      "deb",
+      "appimage"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

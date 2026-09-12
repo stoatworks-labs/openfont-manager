@@ -542,6 +542,11 @@ pub fn run(background: bool, pending_list: Option<(String, String)>) {
                 })
                 .build(app)?;
 
+            // The window is created hidden (`visible: false` in tauri.conf.json)
+            // so that a `--background` launch — what the login item runs — never
+            // flashes it. Everything else shows it here. Proved on kde-lab:
+            // without the config flag this branch is decorative, since a window
+            // created visible is visible whatever show_main does.
             if !background {
                 show_main(&handle);
             }
