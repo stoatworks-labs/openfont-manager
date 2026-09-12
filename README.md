@@ -4,10 +4,15 @@
 > (Anthropic), directed and reviewed by a human author. The browser download,
 > the desktop install, the watched folder, a mounted-folder source and a
 > WebDAV source with basic auth were each run end to end on macOS against
-> real downloads. **The Windows and Linux install paths have not been run on
-> Windows or Linux** — the code is carried over from a sibling project where
-> the Windows path was checked, but check it on a spare machine before you
-> rely on it in front of a client.
+> real downloads. The installers the release workflow builds were then put
+> through the same paces on a Windows 11 VM and an Ubuntu 24.04 VM: silent
+> install, a headless `--install` (files in the per-user font folder, the
+> registry values Windows expects, fontconfig on Linux), an install from the
+> checkout in the running app, the login item on and off, and a
+> `--background` launch that stays in the tray and runs its startup pass.
+> What has **not** been run is a real login with the item enabled, and a
+> real SMB or NFS share (the share source was proved on a local folder and a
+> WebDAV server). Check it on a spare machine before a show depends on it.
 
 Browse, preview and bulk-download open-source fonts — every Google Fonts
 family, plus the ones Fontsource carries that Google does not — or hand it a

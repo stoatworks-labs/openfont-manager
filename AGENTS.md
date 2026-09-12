@@ -112,34 +112,40 @@ Passwords: keychain on macOS/Windows (`keyring` crate, service
 secret-service crates need D-Bus headers at build time and the release
 builder does not have them. The UI says which.
 
-## 8. What was and was not verified (v0.1.0, 2026-09-12, macOS)
+## 8. What was and was not verified (v0.1.0, 2026-09-12)
 
-Verified: browser zip with real downloads (mirror fallback exercised by a
-429); import of every format; desktop cart install into a scratch folder
-with CoreText registration (the "installed" badge appeared immediately);
-headless `--sync` three passes (list, share font, no-op); the provisioning
-panel's Test, Sync now and log; a WebDAV source with basic auth.
+macOS (this machine): browser zip with real downloads (mirror fallback
+exercised by a 429); import of every format; desktop cart install into a
+scratch folder with CoreText registration (the "installed" badge appeared
+immediately); headless `--sync` three passes (list, share font, no-op); the
+provisioning panel's Test, Sync now and log; a WebDAV source with basic auth;
+`--background` listing no window and running the startup pass, a second
+launch forwarded by single-instance and revealing it; the login item writing
+`~/Library/LaunchAgents/OpenFont Manager.plist` (`--background`, RunAtLoad).
 
-Not verified: the Windows registry/`AddFontResourceW` path and the Linux
-`fc-cache` path (carried over, not run); the login item (never enabled, to
-keep this machine clean); the release installers.
+Windows 11 26200 (win-lab VM, the NSIS installer from the release dry run):
+silent `/S` install to `%LOCALAPPDATA%\OpenFont Manager`; headless
+`--install` put five files in the per-user font folder and five values in
+the HKCU Fonts key named the way the shell names them (`Abel Regular
+(TrueType)`); a GUI install of Montserrat took the key from 5 to 7 values —
+additive, nothing wiped — and GDI+ enumerated every named instance at once;
+the login item wrote the HKCU Run value with `--background` and removed it;
+`--background` ran the startup pass with no window. **Window checks from an
+ssh session are blind**: it runs in session 0 and `FindWindow` /
+`MainWindowTitle` cannot see session 1's windows — the hypervisor's
+`virsh screenshot` is the only evidence of what is on screen. Drive the app
+through WebView2's CDP (`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=
+--remote-debugging-port=9222`, launched by a scheduled task with an
+Interactive principal, tunnelled with `ssh -L`).
 
-The bundle's `install-fonts.ps1` is the same script as pptx-font-manager's,
-and that one *was* run end to end on Windows 11 26200 on 2026-09-12. It
-caught two things, both fixed here as well:
+Ubuntu 24.04 (kde-lab VM, the .deb): headless `--install` put 19 files in
+`~/.local/share/fonts` and `fc-list` saw all of them; the GUI showed the
+installed badge from fontconfig, installed Lobster Two from the checkout and
+flipped the badge; the login item wrote `~/.config/autostart/OpenFont
+Manager.desktop`; `--background` showed only the tray icon and ran the
+startup pass. Driven with xdotool on the X11 session.
 
-- `New-Item -Path $regPath -Force` on the HKCU `Fonts` key recreates the key
-  **empty** when it already exists, so every run unregistered every per-user
-  font on the machine (the user's own included) before registering its own.
-  Files and the session's GDI copies survive, so it only shows at the next
-  sign-in. Measured: 10 values before that line, 0 after; guarded with
-  `Test-Path`, 10 → 11. The script now only creates the key when it is
-  missing, and `test/bundle.test.ts` pins that. The Rust `register_font`
-  goes through `winreg`'s `create_subkey_with_flags` (`RegCreateKeyExW`),
-  which opens an existing key intact — unaffected.
-- Chrome and Edge *do* see per-user fonts, but read the Windows font list
-  once per browser process: a font installed while the browser runs stays
-  invisible — reload, new tab and `queryLocalFonts` included — until it is
-  closed completely and reopened (Edge lingers in the tray). The installer's
-  closing line, the bundle README and `docs/PROVISIONING.md` now say that
-  instead of "browsers do not see per-user fonts".
+Not verified: an actual login with the item enabled on any platform; a real
+SMB or NFS mount as a source (proved on a local folder and a WebDAV server);
+the release installers as signed/notarised artefacts (only the dry-run
+artifacts were installed).

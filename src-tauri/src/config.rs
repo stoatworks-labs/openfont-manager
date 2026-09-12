@@ -8,7 +8,8 @@
 //!
 //!   macOS    ~/Library/Application Support/com.stoatworks.openfontmanager/
 //!   Windows  %APPDATA%\com.stoatworks.openfontmanager\
-//!   Linux    ~/.config/openfont-manager/  and  ~/.local/share/openfont-manager/
+//!   Linux    ~/.config/com.stoatworks.openfontmanager/  (settings)
+//!            ~/.local/share/com.stoatworks.openfontmanager/  (state, log)
 //!
 //! `OPENFONT_HOME` overrides both directories — for the tests, and for a
 //! portable install.
