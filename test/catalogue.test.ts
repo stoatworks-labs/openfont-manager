@@ -75,5 +75,8 @@ describe('catalogue', () => {
   it('suggests token neighbours', () => {
     expect(suggestFamilies('Garamond').map((f) => f.name)).toContain('EB Garamond')
     expect(suggestFamilies('xx')).toEqual([])
+    expect(suggestFamilies('Comic Sans MS').map((f) => f.name)).toContain('Comic Neue')
+    expect(suggestFamilies('Comic Sans MS').map((f) => f.name)).not.toContain('DM Sans')
+    expect(suggestFamilies('Roboto Serif Pro').map((f) => f.name)).toContain('Roboto')
   })
 })

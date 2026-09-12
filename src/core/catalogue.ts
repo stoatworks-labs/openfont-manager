@@ -268,9 +268,15 @@ export function findFamily(name: string, source: Source | 'auto' = 'auto'): Fami
  * "Garamond" -> "EB Garamond" / "Cormorant Garamond", which share a whole
  * word but are far apart by character edits.
  */
+/**
+ * Words so common in family names that sharing one means nothing: "Comic
+ * Sans MS" has nothing to do with DM Sans.
+ */
+const STOP_TOKENS = new Set(['sans', 'serif', 'mono', 'display', 'text', 'pro', 'std', 'new', 'old', 'font', 'type', 'the'])
+
 export function suggestFamilies(name: string, limit = 3): Family[] {
   const wanted = normalizeKey(parseFontName(name).family)
-  const wantedTokens = new Set(wanted.split(' ').filter((t) => t.length > 2))
+  const wantedTokens = new Set(wanted.split(' ').filter((t) => t.length > 2 && !STOP_TOKENS.has(t)))
   if (wantedTokens.size === 0) return []
 
   const scored: Array<{ f: Family; score: number }> = []
