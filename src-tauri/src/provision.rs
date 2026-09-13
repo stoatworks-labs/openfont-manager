@@ -72,7 +72,7 @@ fn now() -> String {
 fn sha256_hex(data: &[u8]) -> String {
     let mut h = Sha256::new();
     h.update(data);
-    format!("{:x}", h.finalize())
+    h.finalize().iter().map(|b| format!("{b:02x}")).collect()
 }
 
 fn is_hidden(name: &str) -> bool {
