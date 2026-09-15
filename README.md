@@ -23,6 +23,10 @@ timer, with no administrator password.
 Everything in the browser version happens in the browser. Nothing you do is
 sent anywhere except the two font CDNs.
 
+![The OpenFont Manager catalogue searched for garamond, with Cormorant Garamond opened and EB Garamond in the checkout](docs/screenshots/openfont-manager.png)
+
+<sub>The browser catalogue searched for “garamond”: Cormorant Garamond opened to its weights, files, designer and licence, EB Garamond already in the checkout, and the zip about to be built from the original TTFs.</sub>
+
 ---
 
 ## What it does
