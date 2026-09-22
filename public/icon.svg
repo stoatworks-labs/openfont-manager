@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="OpenFont Manager">
+  <rect width="32" height="32" rx="6" fill="#1d1c1a"/>
+  <g id="mark">
+    <!-- A letterform, on its way down. -->
+    <path d="M7 24 13.5 8h1.9L22 24" fill="none" stroke="#d9823f" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10 18.6h9" stroke="#d9823f" stroke-width="1.9" stroke-linecap="round"/>
+    <path d="M25.6 11.5v9.2m0 0 2.5-2.5m-2.5 2.5-2.5-2.5" fill="none" stroke="#d9823f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
+  </g>
+</svg>
