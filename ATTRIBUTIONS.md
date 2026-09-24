@@ -1,48 +1,58 @@
 # Attributions
 
-OpenFont Manager is built on other people's work.
+OpenFont Manager is built on other people's work. This file lists what that work is, who did
+it, and what it is doing here.
 
-## Font sources
+It is generated — the master lists live in the `stoatworks-backend` repo and are
+pushed out by `scripts/sync-attributions.py`. Edit it there, not here.
 
-### Google Fonts
+## Third-party code this project uses
 
-<https://github.com/google/fonts>
-Licences: SIL Open Font License 1.1, Apache License 2.0, Ubuntu Font Licence 1.0 — per family, in each family's directory.
-
-The catalogue is built from `fonts.google.com/metadata/fonts` and the repository tree; the files are fetched from the repository at runtime, mirrored by jsDelivr. Previews use the Google Fonts CSS API.
-
-### Fontsource
-
-<https://fontsource.org>
-Licence of the project: MIT. Fonts carry their own licences, recorded per family.
-
-The ~120 families Google Fonts does not carry, served by jsDelivr.
-
-## Code
-
-### pptx-font-manager
-
-<https://github.com/stoatworks-labs/pptx-font-manager> — MIT, Stoatworks Labs
-
-The font-install code (`src-tauri/src/fonts.rs`), the name normaliser (`src/core/names.ts`), the installer scripts (`src/core/installers.ts`) and the substitutes table were carried over from this sibling project.
+Libraries, SDKs and frameworks the project is built on or bundles.
 
 ### Tauri
 
-<https://tauri.app> — MIT or Apache-2.0, The Tauri Programme within The Commons Conservancy
+<https://tauri.app>  
+Licence: MIT or Apache-2.0  
+Copyright: The Tauri Programme within The Commons Conservancy
+
+A Cargo and npm dependency — of the app itself under src-tauri/, or of the desktop launcher under launcher/src-tauri/.
+
+Wraps a web front end in a native desktop app using the platform's own webview rather than a bundled browser, so the binary stays small.
 
 ### React
 
-<https://react.dev> — MIT, Meta Platforms, Inc. and affiliates
+<https://react.dev>  
+Licence: MIT  
+Copyright: Meta Platforms, Inc. and affiliates
 
-### fflate
+An npm dependency.
 
-<https://github.com/101arrowz/fflate> — MIT, Arjun Barrett
+The UI layer for the browser tools and the Electron and Tauri front ends.
 
-The zip is streamed through fflate's `Zip` class.
+### The Rust crate ecosystem
 
-### The npm and crates.io ecosystems
+<https://crates.io>  
+Licence: predominantly MIT or Apache-2.0  
+Copyright: the individual crate authors
 
-The full transitive dependency set for any build is pinned in `package-lock.json` and `src-tauri/Cargo.lock`, which are the authoritative lists.
+Cargo dependencies, resolved and pinned in Cargo.lock.
+
+Async runtimes, protocol codecs, serialisation and GUI toolkits. The exact set and versions for any build are in that repo's Cargo.lock, which is the authoritative list.
+
+### The npm ecosystem
+
+<https://www.npmjs.com>  
+Licence: predominantly MIT  
+Copyright: the individual package authors
+
+npm dependencies, resolved and pinned in the lockfile.
+
+Build tooling, test runners and the libraries the front ends are assembled from. The exact set and versions for any build are in that repo's lockfile, which is the authoritative list.
+
+The full transitive dependency set for any build is pinned in this repo's lockfile,
+which is the authoritative list. What is named above is the layers a reader would
+want to know about, not every package that has ever been resolved.
 
 ## Getting this wrong
 
