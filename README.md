@@ -176,10 +176,6 @@ about newly added families.
 
 ---
 
-<!-- attributions:start -->
-This project is built on other people's work — see [ATTRIBUTIONS.md](ATTRIBUTIONS.md).
-<!-- attributions:end -->
-
 ## Licence
 
 MIT. The fonts are not part of this project and carry their own licences —
