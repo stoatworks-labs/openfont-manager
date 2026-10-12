@@ -166,7 +166,7 @@ at the bottom of the provisioning panel. `OPENFONT_HOME` overrides both and
 ```bash
 npm install
 npm run dev            # browser app on http://localhost:5173
-npm test               # 32 vitest tests, offline
+npm test               # 34 vitest tests, offline
 npm run build          # tsc + vite -> dist/
 
 npm run desktop:dev    # Tauri dev build (needs Rust)
