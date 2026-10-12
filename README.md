@@ -19,8 +19,13 @@ CSV, XML or text list. As a desktop app it installs them for you: from the
 checkout, from a folder it watches, from a network share, at login or on a
 timer, with no administrator password.
 
-Everything in the browser version happens in the browser. Nothing you do is
-sent anywhere except the two font CDNs.
+Everything in the browser version happens in the browser. The servers it talks
+to are the ones the fonts come from: GitHub (`raw.githubusercontent.com`) and
+jsDelivr (`cdn.jsdelivr.net`) for the files and the Fontsource previews, and
+Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`) for the other
+previews, fetched as each card scrolls into view. The only other one is
+`intake.stoatworks-labs.com`, and only if you send a report from the feedback
+button in the footer.
 
 ![The OpenFont Manager catalogue searched for garamond, with Cormorant Garamond opened and EB Garamond in the checkout](docs/screenshots/openfont-manager.png)
 
