@@ -1,23 +1,22 @@
 # OpenFont Manager
 
 > **AI-assisted project.** This codebase was created with [Claude](https://claude.com/claude-code)
-> (Anthropic), directed and reviewed by a human author. The browser download,
+> (Anthropic), directed and reviewed by a human author. I've run the browser download,
 > the desktop install, the watched folder, a mounted-folder source and a
-> WebDAV source with basic auth were each run end to end on macOS against
-> real downloads. The installers the release workflow builds were then put
-> through the same paces on a Windows 11 VM and an Ubuntu 24.04 VM: silent
-> install, a headless `--install` (files in the per-user font folder, the
-> registry values Windows expects, fontconfig on Linux), an install from the
-> checkout in the running app, the login item on and off, and a
-> `--background` launch that stays in the tray and runs its startup pass.
-> What has **not** been run is a real login with the item enabled, and a
-> real SMB or NFS share (the share source was proved on a local folder and a
-> WebDAV server). Check it on a spare machine before a show depends on it.
+> WebDAV source with basic auth end to end on macOS against real downloads. The
+> installers the release workflow builds then went through the same paces on a
+> Windows 11 VM and an Ubuntu 24.04 VM: silent install, a headless `--install`
+> (files in the per-user font folder, the registry values Windows expects, fontconfig
+> on Linux), an install from the checkout in the running app, the login item on and
+> off, and a `--background` launch that stays in the tray and runs its startup pass.
+> What **hasn't** been run is a real login with the item enabled, or a real SMB or
+> NFS share (the share source was proved on a local folder and a WebDAV server).
+> Check it on a spare machine before a show depends on it.
 
-Browse, preview and bulk-download open-source fonts — every Google Fonts
-family, plus the ones Fontsource carries that Google does not — or hand it a
+Browse, preview and bulk-download open-source fonts (every Google Fonts
+family, plus the ones Fontsource carries that Google doesn't), or hand it a
 CSV, XML or text list. As a desktop app it installs them for you: from the
-checkout, from a folder it watches, from a network share, at login, on a
+checkout, from a folder it watches, from a network share, at login or on a
 timer, with no administrator password.
 
 Everything in the browser version happens in the browser. Nothing you do is
@@ -31,54 +30,55 @@ sent anywhere except the two font CDNs.
 
 ## What it does
 
-**A catalogue of 2,058 families** — 1,939 Google Fonts families with
+**A catalogue of 2,058 families:** 1,939 Google Fonts families with
 downloadable files and 119 more from Fontsource (Adwaita, Aileron, Chunk
 Five, …). Search by name or designer; filter by category, source, licence,
-script subset, variable axes, italics; sort by popularity, name or date
+script subset, variable axes and italics; sort by popularity, name or date
 added. Every card renders your own sample text in the actual face, loaded
 lazily as it scrolls into view.
 
-**The files are the real ones.** Downloads come from the `google/fonts`
-repository on GitHub (mirrored by jsDelivr) and the Fontsource CDN — the
-complete, original TTFs. *Not* the Google CSS API, which serves woff2
-subsetted by unicode-range: a subsetted font installs cleanly and then
-renders blanks outside its subset. The CSS API is used for the previews, and
-only for the previews. See [AGENTS.md](AGENTS.md) §2.
+**The files are the proper ones.** Downloads come from the `google/fonts`
+repository on GitHub (mirrored by jsDelivr) and the Fontsource CDN, so you get the
+complete, original TTFs. They *don't* come from the Google CSS API, which serves woff2
+subsetted by unicode-range, and a subsetted font installs cleanly and then
+renders blanks outside its subset. That's a fun one to find on a lectern at
+five to nine. The CSS API is used for the previews, and only for the previews.
+See [AGENTS.md](AGENTS.md) §2.
 
 **A checkout.** Add families whole, or open *Styles* and pick weights and
-italics. Download as one zip — streamed straight to disk on Chrome and Edge,
-so pulling the entire catalogue (about 2.2 GB, 4,373 files) costs no memory;
-built in memory and split into parts on browsers that cannot stream. The zip
+italics. Download the lot as one zip. On Chrome and Edge it streams straight to disk,
+so pulling the entire catalogue (about 2.2 GB, 4,373 files) costs no memory; on
+browsers that can't stream, it's built in memory and split into parts. The zip
 carries one folder per family with its licence text, a `MANIFEST.txt` of
 provenance and licence for every file, and installer scripts for macOS,
-Windows and Linux that write to the per-user font directory. Export the
+Windows and Linux that write to the per-user font directory. You can export the
 checkout as a CSV or XML list to hand to another machine.
 
 **Lists.** Drop a `.csv`, `.xml` or `.txt` on the import tab and it resolves
-every name against the catalogue, tolerating case, punctuation and a
-trailing style word (`Poppins-Bold` finds Poppins). Names it cannot find get
-suggestions — and for the proprietary fonts a document is most likely to
+every name against the catalogue, coping with case, punctuation and a
+trailing style word (`Poppins-Bold` finds Poppins). Names it can't find get
+suggestions, and for the proprietary fonts a document is most likely to
 name, an open stand-in: Carlito for Calibri, Arimo for Arial, Tinos for Times
 New Roman, Caladea for Cambria, Cousine for Courier New, Gelasio for Georgia
 (all metric-compatible, same widths, no reflow), and merely similar faces
 for Segoe UI, Helvetica Neue, Garamond and the rest, labelled as such.
 
 **The desktop app** is this same interface plus the four things a web page
-cannot do:
+can't do:
 
 - **Install** straight from the checkout into your user font folder, and
   tell the OS about it so the font is usable immediately (CoreText
   registration on macOS, the per-user registry key plus `AddFontResource`
-  on Windows, `fc-cache` on Linux). Files already present are never
+  on Windows, `fc-cache` on Linux). Files already there are never
   overwritten.
 - **A watched folder.** Any list placed in it is fetched and installed on
-  the next pass. Lists are remembered by content hash, so one is processed
-  once and again only if it changes.
+  the next pass. Lists are remembered by content hash, so each one is processed
+  once, and again only if it changes.
 - **Start at login**, hidden in the tray, running a pass on startup and on
   an interval you choose.
 - **Network sources.** Add an SMB, NFS or WebDAV share the OS has mounted as
-  a folder, or a WebDAV URL directly (username and password go in the
-  system keychain). Font files found on it — any depth — are installed as
+  a folder, or a WebDAV URL directly (the username and password go in the
+  system keychain). Font files found on it, at any depth, are installed as
   they appear, and lists on it are processed like the watched folder. One
   folder on a NAS provisions every machine that runs the app.
 
@@ -89,9 +89,9 @@ cannot do:
 Three formats, detected by extension or content. The same names resolve the
 same way in the browser, the desktop app and the headless command line.
 
-**CSV** — only `family` is required; the header row is optional and the
-columns may be in any order. Weights are numbers or style words separated by
-`;` or spaces (never a comma); blank or `all` takes the whole family.
+**CSV:** only `family` is required; the header row is optional and the
+columns can be in any order. Weights are numbers or style words separated by
+`;` or spaces (never a comma), and blank or `all` takes the whole family.
 `italic` is yes/no; `source` is `google`, `fontsource` or blank for either.
 
 ```csv
@@ -102,7 +102,7 @@ Inter,all,,
 Adwaita Sans,,,fontsource
 ```
 
-**XML** — any root element; one `<font>` per family, with the same four
+**XML:** any root element, with one `<font>` per family and the same four
 fields as attributes, as child elements, or the name as text.
 
 ```xml
@@ -113,11 +113,11 @@ fields as attributes, as child elements, or the name as text.
 </fonts>
 ```
 
-**TXT** — one family name per line; `#` starts a comment.
+**TXT:** one family name per line; `#` starts a comment.
 
-A whole family includes its italics. A specific weight list does not unless
+A whole family includes its italics. A specific weight list doesn't unless
 `italic` says so. The three files under [`examples/`](examples/) are parsed
-by both test suites, so the two implementations cannot drift apart.
+by both test suites, so the two implementations can't drift apart.
 
 ---
 
@@ -128,16 +128,16 @@ The recipe for a fleet of presentation machines is in
 
 1. Install the desktop app on each machine and open **Automatic
    provisioning**.
-2. Tick **Start at login** and **Sync when the app starts**; pick an
+2. Tick **Start at login** and **Sync when the app starts**, and pick an
    interval.
 3. Either choose a **watched folder** and drop lists in it, or **add a
    source**: the mounted share (`/Volumes/fonts`, `\\nas\fonts`,
-   `/mnt/fonts`) or a WebDAV URL. Press **Test** — it reports how many font
+   `/mnt/fonts`) or a WebDAV URL. Press **Test** and it reports how many font
    files and lists it can see.
-4. Put fonts and lists on the share. Every machine installs what is new on
+4. Put fonts and lists on the share. Every machine installs what's new on
    its next pass.
 
-Sync is additive: a font removed from the share is not uninstalled. A file
+Sync only adds: a font removed from the share isn't uninstalled. A file
 that already exists in the font folder under the same name is never
 replaced, so to ship a new version of a font, ship it under a new filename.
 
@@ -149,7 +149,7 @@ openfont-manager --install list.csv  fetch and install one list, then exit
 openfont-manager --background        start hidden in the tray (what the login item runs)
 ```
 
-Settings live in `settings.json` under the app's config directory, state
+Settings live in `settings.json` under the app's config directory, and state
 (`state.json`) and `sync.log` under its data directory; both paths are shown
 at the bottom of the provisioning panel. `OPENFONT_HOME` overrides both and
 `OPENFONT_INSTALL_DIR` overrides the font folder.
@@ -169,16 +169,16 @@ npm run desktop:build  # installers under src-tauri/target/release/bundle
 cargo test --manifest-path src-tauri/Cargo.toml   # 21 Rust tests, offline
 ```
 
-The catalogues are build-time snapshots; `npm run catalogue` regenerates
+The catalogues are build-time snapshots. `npm run catalogue` regenerates
 both (Google first, then Fontsource, which reads the Google one to know what
-to leave out). The app works with a stale catalogue, it just will not know
+to leave out). The app works with a stale catalogue; it just won't know
 about newly added families.
 
 ---
 
 ## Licence
 
-MIT. The fonts are not part of this project and carry their own licences —
-OFL-1.1, Apache-2.0, UFL-1.0, MIT, CC0 — every one of which permits
+MIT. The fonts aren't part of this project and carry their own licences
+(OFL-1.1, Apache-2.0, UFL-1.0, MIT, CC0), every one of which allows
 installing and redistributing them. Each family's licence text travels with
 its files.
