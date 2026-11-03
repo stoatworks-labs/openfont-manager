@@ -1,0 +1,15 @@
+# OpenFont Manager
+
+> Open fonts, previewed and installed in bulk
+
+Browse, preview and bulk-download open-source fonts (every Google Fonts family, plus the ones Fontsource carries that Google doesn't), or hand it a CSV, XML or text list of family names. You get the complete original TTFs from the google/fonts repository, never the subsetted web versions, and a whole-catalogue pull (about 2.2 GB) streams to disk as one zip with per-platform installers and every family's licence text. Names it can't find get open stand-ins with the same widths: Carlito for Calibri, Arimo for Arial, Tinos for Times New Roman.
+
+The desktop app installs fonts straight into your user font folder, starts at login in the tray, watches a folder for lists, and picks up fonts and lists from an SMB, NFS or WebDAV share, so one folder on a NAS can provision every machine that runs it.
+
+It runs in the browser at https://openfont-manager.stoatworks-labs.com/ and is free to use.
+
+## Links
+
+- [OpenFont Manager on Stoatworks Labs](https://stoatworks-labs.com/web-tools/openfont-manager/): what it is, with links to everything else
+- [Project page](https://stoatworks-labs.com/software/openfont-manager/)
+- [Source code](https://github.com/stoatworks-labs/openfont-manager)

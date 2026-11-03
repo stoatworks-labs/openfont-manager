@@ -3,22 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OpenFont Manager</title>
-    <meta
-      name="description"
-      content="Browse, preview and bulk-download open-source fonts from Google Fonts and Fontsource, or hand it a CSV/XML list. The desktop app installs them for you, at login, from a folder or a network share."
-    />
+    <title>OpenFont Manager — Open fonts, previewed and installed in bulk</title>
+    <meta name="description" content="Browse, preview and bulk-download open-source fonts, every Google Fonts family plus Fontsource's extras, as the complete original TTFs, or hand it a list of names. Free, in the browser." />
     <link rel="canonical" href="https://openfont-manager.stoatworks-labs.com/" />
-    <meta property="og:title" content="OpenFont Manager" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Stoatworks Labs" />
+    <meta property="og:title" content="OpenFont Manager — Open fonts, previewed and installed in bulk" />
+    <meta property="og:description" content="Browse, preview and bulk-download open-source fonts, every Google Fonts family plus Fontsource's extras, as the complete original TTFs, or hand it a list of names. Free, in the browser." />
     <meta property="og:url" content="https://openfont-manager.stoatworks-labs.com/" />
     <!-- Card hosted on the main site: regenerated in place by the website's
          make_thumbnails.py and keeps its filename. -->
     <meta property="og:image" content="https://stoatworks-labs.com/thumbs/openfont-manager.png" />
-    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1280" />
     <meta property="og:image:height" content="720" />
+    <meta property="og:image:alt" content="OpenFont Manager" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://stoatworks-labs.com/thumbs/openfont-manager.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "@id": "https://openfont-manager.stoatworks-labs.com#app",
+        "name": "OpenFont Manager",
+        "url": "https://openfont-manager.stoatworks-labs.com",
+        "description": "Browse, preview and bulk-download open-source fonts, every Google Fonts family plus Fontsource's extras, as the complete original TTFs, or hand it a list of names. Free, in the browser.",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Any (runs in a web browser)",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "GBP"
+        },
+        "author": {
+          "@id": "https://stoatworks-labs.com/#organization",
+          "@type": "Organization",
+          "name": "Stoatworks Labs",
+          "url": "https://stoatworks-labs.com/"
+        },
+        "publisher": {
+          "@id": "https://stoatworks-labs.com/#organization"
+        },
+        "sameAs": [
+          "https://stoatworks-labs.com/web-tools/openfont-manager/",
+          "https://github.com/stoatworks-labs/openfont-manager"
+        ]
+      }
+    </script>
     <meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#16161a" media="(prefers-color-scheme: dark)" />
     <link rel="manifest" href="/manifest.webmanifest" />
@@ -26,6 +56,17 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
+    <noscript>
+      <h1>OpenFont Manager</h1>
+      <p>Browse, preview and bulk-download open-source fonts (every Google Fonts family, plus the ones Fontsource carries that Google doesn't), or hand it a CSV, XML or text list of family names. You get the complete original TTFs from the google/fonts repository, never the subsetted web versions, and a whole-catalogue pull (about 2.2 GB) streams to disk as one zip with per-platform installers and every family's licence text. Names it can't find get open stand-ins with the same widths: Carlito for Calibri, Arimo for Arial, Tinos for Times New Roman.</p>
+      <p>The desktop app installs fonts straight into your user font folder, starts at login in the tray, watches a folder for lists, and picks up fonts and lists from an SMB, NFS or WebDAV share, so one folder on a NAS can provision every machine that runs it.</p>
+      <p>It needs JavaScript to run.</p>
+      <ul>
+        <li><a href="https://stoatworks-labs.com/web-tools/openfont-manager/">OpenFont Manager on Stoatworks Labs</a></li>
+        <li><a href="https://stoatworks-labs.com/software/openfont-manager/">Project page</a></li>
+        <li><a href="https://github.com/stoatworks-labs/openfont-manager">Source code on GitHub</a></li>
+      </ul>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

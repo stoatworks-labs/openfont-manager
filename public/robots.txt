@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://openfont-manager.stoatworks-labs.com/sitemap.xml

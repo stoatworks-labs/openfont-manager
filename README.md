@@ -27,6 +27,8 @@ previews, fetched as each card scrolls into view. The only other one is
 `intake.stoatworks-labs.com`, and only if you send a report from the feedback
 button in the footer.
 
+The browser version is at [openfont-manager.stoatworks-labs.com](https://openfont-manager.stoatworks-labs.com). The [project page](https://stoatworks-labs.com/software/openfont-manager/) covers the desktop app too, and the [web tool page](https://stoatworks-labs.com/web-tools/openfont-manager/) sits with the other browser tools.
+
 ![The OpenFont Manager catalogue searched for garamond, with Cormorant Garamond opened and EB Garamond in the checkout](docs/screenshots/openfont-manager.png)
 
 <sub>The browser catalogue searched for “garamond”: Cormorant Garamond opened to its weights, files, designer and licence, EB Garamond already in the checkout, and the zip about to be built from the original TTFs.</sub>

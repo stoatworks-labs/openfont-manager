@@ -91,7 +91,17 @@ export default function App() {
         Catalogues: Google Fonts {CATALOGUE_DATES.google}, Fontsource {CATALOGUE_DATES.fontsource}. Downloads come straight
         from the google/fonts repository and the Fontsource CDN — the complete original files, never the subsetted web
         versions. Nothing you do here is sent anywhere else. {__APP_VERSION__}
-        {desktop ? ' · desktop' : ''}
+        {/* Hosted build only: in the desktop window a link would just be a way out of the app. */}
+        {desktop ? (
+          ' · desktop'
+        ) : (
+          <>
+            {' · '}
+            <a href="https://stoatworks-labs.com/web-tools/openfont-manager/" target="_blank" rel="noopener">
+              About this tool
+            </a>
+          </>
+        )}
       </footer>
     </div>
   )

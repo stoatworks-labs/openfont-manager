@@ -979,3 +979,4 @@ textarea {
   font-size: 12.5px;
   max-width: 90ch;
 }
+.foot a { color: inherit; }
