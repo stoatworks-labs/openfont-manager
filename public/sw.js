@@ -37,6 +37,8 @@ const SHELL = [
   '/manifest.webmanifest',
   '/icon.svg',
   '/support-footer.js',
+  '/about.js',
+  '/about-data.js',
 ];
 
 // Pull in the hashed files the current build actually names.
