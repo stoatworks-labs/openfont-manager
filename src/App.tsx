@@ -56,28 +56,48 @@ export default function App() {
 
   return (
     <div className="app">
-      <header className="top">
-        <div className="top__title">
-          <h1>OpenFont Manager</h1>
-          <p className="sub">
-            {COUNTS.googleDownloadable.toLocaleString()} Google Fonts families and {COUNTS.fontsource} more from Fontsource —{' '}
-            {COUNTS.files.toLocaleString()} original, installable font files, about {formatBytes(COUNTS.bytes)} in all. Every one
-            under an open licence.
-          </p>
+      <header className="sw-bar top">
+        <div className="top__inner">
+          <div className="top__title">
+            <h1 className="sw-brand">
+              <span className="sw-mark" aria-hidden="true">ƒ</span> OpenFont Manager
+            </h1>
+            <p className="sub">
+              {COUNTS.googleDownloadable.toLocaleString()} Google Fonts families and {COUNTS.fontsource} more from Fontsource —{' '}
+              {COUNTS.files.toLocaleString()} original, installable font files, about {formatBytes(COUNTS.bytes)} in all. Every one
+              under an open licence.
+            </p>
+          </div>
+          <div className="top__end">
+            <nav className="tabs" aria-label="Sections">
+              <button type="button" className={tab === 'catalogue' ? 'on' : ''} onClick={() => setTab('catalogue')}>
+                Catalogue
+              </button>
+              <button type="button" className={tab === 'import' ? 'on' : ''} onClick={() => setTab('import')}>
+                Import a list
+              </button>
+              <button type="button" className={tab === 'provision' ? 'on' : ''} onClick={() => setTab('provision')}>
+                Automatic provisioning{desktop ? '' : ' ↗'}
+              </button>
+            </nav>
+            {/* Hosted build only, as in the footer: in the desktop window a link would just be a way out of the app.
+                There is no about.js here yet; marked so the About window takes over once it is synced in. */}
+            {desktop ? null : (
+              <a
+                className="sw-btn about"
+                data-stoatworks-about
+                href="https://stoatworks-labs.com/web-tools/openfont-manager/"
+                target="_blank"
+                rel="noopener"
+              >
+                About
+              </a>
+            )}
+          </div>
         </div>
-        <nav className="tabs" aria-label="Sections">
-          <button type="button" className={tab === 'catalogue' ? 'on' : ''} onClick={() => setTab('catalogue')}>
-            Catalogue
-          </button>
-          <button type="button" className={tab === 'import' ? 'on' : ''} onClick={() => setTab('import')}>
-            Import a list
-          </button>
-          <button type="button" className={tab === 'provision' ? 'on' : ''} onClick={() => setTab('provision')}>
-            Automatic provisioning{desktop ? '' : ' ↗'}
-          </button>
-        </nav>
       </header>
 
+      <div className="app__body">
       <main className={`main${tab === 'provision' ? ' main--wide' : ''}`}>
         <div className="main__content">
           {tab === 'catalogue' && <Catalogue cart={cart} installed={installed} />}
@@ -103,6 +123,7 @@ export default function App() {
           </>
         )}
       </footer>
+      </div>
     </div>
   )
 }

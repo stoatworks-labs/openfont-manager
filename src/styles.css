@@ -1,49 +1,27 @@
+/* Colours come from the shared Stoatworks theme (stoatworks-theme.css, imported first),
+   so the tool follows the system's light or dark setting the way every fleet tool does.
+   The status tints are mixed from the theme's status colours over the card. The theme
+   also sets --sw-support-accent for the shared support footer. */
 :root {
-  --bg: #fbfbfa;
-  --panel: #ffffff;
-  --panel-2: #f4f4f2;
-  --ink: #1d1c1a;
-  --ink-2: #5c5a55;
-  --ink-3: #8a8781;
-  --line: #e2e0db;
-  --accent: #a8541c;
-  --accent-ink: #ffffff;
-  --ok: #2f6b3f;
-  --ok-bg: #e9f2ea;
-  --warn: #8a6100;
-  --warn-bg: #fbf1da;
-  --bad: #97331f;
-  --bad-bg: #fbeae6;
-  --info: #2a5878;
-  --info-bg: #e8f0f6;
-  --radius: 10px;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
-  /* The shared support footer (public/support-footer.js) reads this. */
-  --sw-support-accent: var(--accent);
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #16161a;
-    --panel: #1e1e24;
-    --panel-2: #26262e;
-    --ink: #eceaea;
-    --ink-2: #b0adae;
-    --ink-3: #7e7b7d;
-    --line: #33333c;
-    --accent: #e08e4f;
-    --accent-ink: #201404;
-    --ok: #8fd0a1;
-    --ok-bg: #1c2c21;
-    --warn: #e5be6d;
-    --warn-bg: #2e2718;
-    --bad: #f0a291;
-    --bad-bg: #32201c;
-    --info: #9cc4e0;
-    --info-bg: #1a262f;
-    color-scheme: dark;
-  }
+  --bg: var(--sw-paper);
+  --panel: var(--sw-card);
+  --panel-2: var(--sw-tint);
+  --ink: var(--sw-ink);
+  --ink-2: var(--sw-muted);
+  --ink-3: var(--sw-faint);
+  --line: var(--sw-line);
+  --accent: var(--sw-accent);
+  --accent-ink: var(--sw-on-accent);
+  --accent-bg: color-mix(in srgb, var(--sw-accent) 12%, var(--sw-card));
+  --ok: var(--sw-ok);
+  --ok-bg: color-mix(in srgb, var(--sw-ok) 11%, var(--sw-card));
+  --warn: var(--sw-warn);
+  --warn-bg: color-mix(in srgb, var(--sw-warn) 12%, var(--sw-card));
+  --bad: var(--sw-bad);
+  --bad-bg: color-mix(in srgb, var(--sw-bad) 10%, var(--sw-card));
+  --info: var(--sw-accent);
+  --info-bg: var(--sw-tint);
+  --radius: var(--sw-radius);
 }
 
 * {
@@ -59,21 +37,20 @@ body {
 body {
   background: var(--bg);
   color: var(--ink);
-  font: 15px/1.5 ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font: 15px/1.5 var(--sw-font);
   -webkit-font-smoothing: antialiased;
 }
 
-.app {
+/* The navy bar runs the full width of the window; what sits under it keeps the 1320 px column. */
+.top__inner,
+.app__body {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 22px 20px 60px;
+  padding: 0 20px;
 }
 
-h1 {
-  font-size: 24px;
-  font-weight: 650;
-  letter-spacing: -0.015em;
-  margin: 0 0 4px;
+.app__body {
+  padding: 18px 20px 60px;
 }
 
 h2 {
@@ -94,7 +71,7 @@ a {
 }
 
 code {
-  font: 12.5px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font: 12.5px/1.4 var(--sw-mono);
   background: var(--panel-2);
   padding: 1px 5px;
   border-radius: 4px;
@@ -109,49 +86,83 @@ code {
   font-size: 12.5px;
 }
 
-/* ---------- header ---------- */
+/* ---------- header: the navy bar ---------- */
 
 .top {
+  display: block;
+  padding: 14px 0 16px;
+}
+
+.top__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: 12px 24px;
-  margin-bottom: 18px;
+}
+
+.top__title {
+  min-width: 0;
+}
+
+.top .sw-brand {
+  white-space: normal;
+}
+
+.top__end {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Restated: the tool's own unlayered `a` colour would beat the theme's bar button. */
+.top .about {
+  display: inline-block;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-decoration: none;
+  color: var(--sw-navy-ink);
 }
 
 .sub {
-  color: var(--ink-2);
-  margin: 0;
+  color: var(--sw-navy-ink-2);
+  margin: 6px 0 0;
   max-width: 70ch;
   font-size: 14px;
 }
 
+/* The section switch, as a segmented control on the bar: the chosen one takes the soft accent. */
 .tabs {
   display: flex;
-  gap: 4px;
-  background: var(--panel-2);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 3px;
+  border: 1px solid var(--sw-navy-line);
+  border-radius: var(--sw-radius-sm);
+  background: var(--sw-navy-tint);
+  overflow: hidden;
 }
 
 .tabs button {
   border: 0;
+  border-radius: 0;
   background: transparent;
-  color: var(--ink-2);
+  color: var(--sw-navy-ink-2);
   font: inherit;
   font-size: 13.5px;
   font-weight: 600;
   padding: 6px 14px;
-  border-radius: 999px;
   cursor: pointer;
 }
 
+.tabs button + button {
+  border-left: 1px solid var(--sw-navy-line);
+}
+
+.tabs button:hover {
+  color: var(--sw-navy-ink);
+}
+
 .tabs button.on {
-  background: var(--panel);
-  color: var(--ink);
-  box-shadow: var(--shadow);
+  background: var(--sw-accent-soft);
+  color: var(--sw-navy);
 }
 
 /* ---------- layout ---------- */
@@ -192,7 +203,7 @@ code {
 }
 
 .btn:hover:not(:disabled) {
-  border-color: var(--ink-3);
+  border-color: var(--accent);
 }
 
 .btn:disabled {
@@ -215,10 +226,11 @@ code {
   background: transparent;
 }
 
+/* In the cart: a selection, so it takes the accent like a chosen segment. */
 .btn--in {
-  background: var(--ok-bg);
-  border-color: var(--ok-bg);
-  color: var(--ok);
+  background: var(--accent-bg);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  color: var(--accent);
 }
 
 .btn--sm {
@@ -287,9 +299,9 @@ code {
 }
 
 .chipbtn--on {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .chipbtn--on small {
@@ -397,7 +409,7 @@ textarea {
 }
 
 .card--in {
-  border-color: color-mix(in srgb, var(--ok) 50%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
 }
 
 .card__head {
@@ -465,8 +477,8 @@ textarea {
 }
 
 .weight--on {
-  border-color: var(--ok);
-  background: var(--ok-bg);
+  border-color: var(--accent);
+  background: var(--accent-bg);
 }
 
 .facts {
@@ -508,7 +520,6 @@ textarea {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 14px 16px;
-  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -725,7 +736,7 @@ textarea {
   display: block;
   width: 100%;
   margin-top: 4px;
-  font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font: 13px/1.5 var(--sw-mono);
   resize: vertical;
 }
 
@@ -953,12 +964,12 @@ textarea {
   color: var(--ink);
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--sw-radius-sm);
   padding: 6px 10px;
 }
 
 .log {
-  font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font: 12px/1.45 var(--sw-mono);
   background: var(--panel-2);
   border-radius: 8px;
   padding: 10px 12px;
